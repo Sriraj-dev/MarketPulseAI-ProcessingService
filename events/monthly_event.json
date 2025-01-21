@@ -1,0 +1,9 @@
+
+
+{
+    "Records":[
+        {
+            "body": "{\"rundate\": \"2025-01-09T18:00:00Z\", \"event_type\": \"custom\", \"source_directory\": \"summary_data/Weekly/\", \"target_directory\":\"summary_data/Monthly/\",\"target_entities\" : 4 ,\"s3bucket\": \"market-pulse-ai\"}" 
+        }
+    ]
+}
