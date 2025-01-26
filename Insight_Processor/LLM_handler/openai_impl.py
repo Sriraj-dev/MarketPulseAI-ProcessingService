@@ -10,7 +10,7 @@ import json
 class OpenAI_Impl(LLM_Interfacer):
 
     def summarise_scraped_data(self, market_data : str, additionalPrompt : str) -> str:
-        return market_data;
+        return market_data
     
     def analyse_daily_market_data(self, market_data : str) -> str:
         response = self.__llm(ANALYSE_DAILY_MARKET_DATA_PROMPT, market_data)

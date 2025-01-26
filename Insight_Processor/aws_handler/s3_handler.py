@@ -8,7 +8,7 @@ s3_client = boto3.client('s3')
 def store_data_to_s3 (file_path : str, upload_data):
     if(upload_data.__len__() == 0):
         print("Empty News Data File, Not uploaded to S3 bucket --Skipping!")
-        return ;
+        return
 
     print("Uploading to S3 bucket")
 

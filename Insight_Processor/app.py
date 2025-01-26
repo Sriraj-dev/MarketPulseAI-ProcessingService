@@ -3,6 +3,7 @@ import datetime
 from insights_generator import analyse_scraped_data,generateInsights
 from LLM_handler import llm_impl
 from aws_handler import store_data_to_s3,save_recommendations_to_dynamoDB
+from ticker_verfier import ticker_handler
 from shared import DAILY_SUMMARY_DATA_DIRECTORY,WEEKLY_SUMMARY_DATA_DIRECTORY,MONTHLY_SUMMARY_DATA_DIRECTORY,YEARLY_SUMMARY_DATA_DIRECTORY
 from shared import DATE_FORMAT
 
@@ -22,6 +23,11 @@ def lambda_handler(event, context):
 
         analysis = analyse_scraped_data(message_body['s3bucket'],message_body['directory'], llm_interfacer=llm_impl)
         file_path = DAILY_SUMMARY_DATA_DIRECTORY + f"{message_body['rundate']}.json"
+    
+
+        ticker_handler.get_verified_ticker(recommendations=analysis.get("recommendations"))
+
+
         store_data_to_s3(file_path, analysis)
 
     elif message_body['event_type'] == 'custom':
