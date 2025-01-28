@@ -11,10 +11,12 @@ def analyse_scraped_data(s3Bucket : str,directory : str,llm_interfacer : LLM_Int
     market_data = []
 
     for key in object_keys:
+        sourcewebsite = key.split("/")[-1].split(".")[0]
+        print("Collecting data from ", sourcewebsite)
         response = s3_client.get_object(Bucket=s3Bucket, Key=key)
         content = response['Body'].read().decode('utf-8')
 
-        intro = "The following data is sourced from website " + key.split("/")[-1].split(".")[0] + " On " + key.split("/")[-2] + " :\n"
+        intro = "The following data is sourced from website " + sourcewebsite + " On " + key.split("/")[-2] + " :\n"
         #summary = llm_interfacer.summarise_scraped_data(content, additional_prompt)
         market_data.append(intro + content)
 
@@ -67,7 +69,7 @@ def generateInsights(s3Bucket: str, source_directory : str, target_entities : in
 
         print("Content :" ,market_data)
         generated_insights = llm_interfacer.generate_insights(market_data)
-        
+
         return generated_insights,file_name
 
     except Exception as e:
