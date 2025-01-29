@@ -1,10 +1,14 @@
-from nsetools import Nse
 from fuzzywuzzy import process
-import os
+import pandas as pd
+
+def get_all_stock_codes():
+    df = pd.read_csv('https://archives.nseindia.com/content/equities/EQUITY_L.csv')  # Fetch all stock symbols and company names
+    eq_list_pd =  dict(zip(df['SYMBOL'], df['NAME OF COMPANY']))
+    return eq_list_pd
 
 def get_verified_ticker(recommendations):
-    nse = Nse()
-    all_stock_codes = nse.get_stock_codes()  # Returns a dictionary of stock codes and their full names
+    print("Ticker Verifier called")
+    all_stock_codes = get_all_stock_codes()  # Returns a dictionary of stock codes and their full names
 
     for recommendation in recommendations:
         name = recommendation.get("name")
@@ -14,6 +18,7 @@ def get_verified_ticker(recommendations):
         if ticker in all_stock_codes:
             continue
         else:
+            print("invalid ticker",ticker, recommendation)
             # Perform fuzzy matching to find the closest stock name
             closest_match, confidence = process.extractOne(name, all_stock_codes.values())
             

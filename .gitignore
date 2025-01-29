@@ -246,3 +246,5 @@ $RECYCLE.BIN/
 .aws-sam
 /.aws_sam
 aws-sam/
+
+/tes.py

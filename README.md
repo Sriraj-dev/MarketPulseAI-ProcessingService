@@ -65,7 +65,7 @@ Test a single function by invoking it directly with a test event. An event is a 
 Run functions locally and invoke them with the `sam local invoke` command.
 
 ```bash
-InsightProcessor$ sam local invoke HelloWorldFunction --event events/event.json
+InsightProcessor$ sam local invoke InsightProcessorFunction --event events/event.json
 ```
 
 The SAM CLI can also emulate your application's API. Use the `sam local start-api` to run the API locally on port 3000.
