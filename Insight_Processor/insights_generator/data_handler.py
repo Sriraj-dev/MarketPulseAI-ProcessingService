@@ -5,8 +5,8 @@ s3_client = boto3.client('s3')
 def analyse_scraped_data(s3Bucket : str,directory : str,llm_interfacer : LLM_Interfacer):
 
     ## Iterate through the sBuckets directory for all the files and generate insights.
-    object_keys = get_object_keys(s3Bucket, directory);
-    print(object_keys);
+    object_keys = get_object_keys(s3Bucket, directory)
+    print(object_keys)
 
     market_data = []
 

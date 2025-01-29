@@ -1,9 +1,7 @@
-
-
 {
-    "Records":[
-        {
-            "body" : "{\"directory\":\"scraped_data/2025-01-01/\", \"rundate\":\"2025-01-01\",\"s3bucket\":\"market-pulse-ai\",\"event_type\":\"daily\"}"
-        }
-    ]
+  "Records": [
+    {
+      "body": "{\"directory\":\"scraped_data/2025-01-01/\", \"rundate\":\"2025-01-01\",\"s3bucket\":\"market-pulse-ai\",\"event_type\":\"daily\"}"
+    }
+  ]
 }

@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: >
   InsightProcessor
@@ -8,7 +8,7 @@ Description: >
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 60
+    Timeout: 120
     MemorySize: 2048
 
     # You can add LoggingConfig parameters such as the Logformat, Log Group, and SystemLogLevel or ApplicationLogLevel. Learn more here https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html#sam-function-loggingconfig.
@@ -22,8 +22,8 @@ Resources:
       Handler: app.lambda_handler
       Runtime: python3.9
       Architectures:
-      - x86_64
-      Role : arn:aws:iam::829982859440:role/InsightProcessorServiceRole
+        - x86_64
+      Role: arn:aws:iam::829982859440:role/InsightProcessorServiceRole
       Events:
         SQSTrigger:
           Type: SQS
@@ -33,33 +33,33 @@ Resources:
   InsightProcessorWeeklyTrigger:
     Type: AWS::Events::Rule
     Properties:
-      ScheduleExpression: "cron(0 18 ? * 6 *)"  # Every Friday at 11:30 PM IST
+      ScheduleExpression: "cron(0 18 ? * 6 *)" # Every Friday at 11:30 PM IST
       Targets:
         - Id: "InsightProcessorTarget"
           Arn: !GetAtt InsightProcessorFunction.Arn
           InputTransformer:
             InputPathsMap:
-              runDate: "$.time"  # Use the event time
+              runDate: "$.time" # Use the event time
             InputTemplate: '{"rundate": "<runDate>", "event_type": "custom", "source_directory": "summary_data/Daily/", "target_directory":"summary_data/Weekly/","target_entities" : 7 ,"s3bucket": "market-pulse-ai"}'
   InsightProcessorMonthlyTrigger:
     Type: AWS::Events::Rule
     Properties:
-      ScheduleExpression: "cron(0 0 1 * ? *)"  # Every First day of the Month
+      ScheduleExpression: "cron(0 0 1 * ? *)" # Every First day of the Month
       Targets:
         - Id: "InsightProcessorTarget"
           Arn: !GetAtt InsightProcessorFunction.Arn
           InputTransformer:
             InputPathsMap:
-              runDate: "$.time"  # Use the event time
+              runDate: "$.time" # Use the event time
             InputTemplate: '{"rundate": "<runDate>", "event_type": "custom", "source_directory": "summary_data/Weekly/", "target_directory":"summary_data/Monthly/","target_entities" : 4 ,"s3bucket": "market-pulse-ai"}'
   InsightProcessorYearlyTrigger:
     Type: AWS::Events::Rule
     Properties:
-      ScheduleExpression: "cron(0 1 1 1 ? *)"  # Every First day of the Year
+      ScheduleExpression: "cron(0 1 1 1 ? *)" # Every First day of the Year
       Targets:
         - Id: "InsightProcessorTarget"
           Arn: !GetAtt InsightProcessorFunction.Arn
           InputTransformer:
             InputPathsMap:
-              runDate: "$.time"  # Use the event time
+              runDate: "$.time" # Use the event time
             InputTemplate: '{"rundate": "<runDate>", "event_type": "custom", "source_directory": "summary_data/Monthly/", "target_directory":"summary_data/Yearly/","target_entities" : 12 ,"s3bucket": "market-pulse-ai"}'
