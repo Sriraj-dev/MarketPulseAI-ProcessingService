@@ -26,6 +26,10 @@ def save_recommendations_to_dynamoDB(recommendations, feedId : str, type : str, 
 def create_dynamoDB_feed(recommendations, feedId : str, type : str, rundate : str):
     feed = []
     for recommendation in recommendations:
+        price = liveMarketHandler.get_current_stock_price(recommendation.get('ticker',""), rundate)
+        if(price == 0):
+            continue
+
         feed.append({
             'feedid': feedId,
             'type': type,
@@ -35,7 +39,7 @@ def create_dynamoDB_feed(recommendations, feedId : str, type : str, rundate : st
             'reason': recommendation.get('reason',""),
             'source': recommendation.get('source',""),
             'dateofrecommendation' : rundate,
-            'suggested_at_price' : liveMarketHandler.get_current_stock_price(recommendation.get('ticker',"")),
+            'suggested_at_price' : price,
             'current_price' : 0,
             'updated_at' : ""
         })

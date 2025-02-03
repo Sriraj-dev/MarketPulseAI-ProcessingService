@@ -6,9 +6,7 @@ from aws_handler import store_data_to_s3,save_recommendations_to_dynamoDB
 from shared import DAILY_SUMMARY_DATA_DIRECTORY,WEEKLY_SUMMARY_DATA_DIRECTORY,MONTHLY_SUMMARY_DATA_DIRECTORY,YEARLY_SUMMARY_DATA_DIRECTORY
 from shared import DATE_FORMAT
 
-
 def lambda_handler(event, context):
-
     message_body = event
 
     if 'Records' in event:
@@ -46,9 +44,5 @@ def lambda_handler(event, context):
         
         print(generated_insights.get('recommendations',[]))
         save_recommendations_to_dynamoDB(generated_insights.get('recommendations',[]), feedId, type, runDate.strftime(DATE_FORMAT))
-
-
-
     else:
         print("Unknown event type: " + message_body['event_type'])
-
